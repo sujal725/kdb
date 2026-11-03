@@ -1,0 +1,28 @@
+// ======================================================================
+// DAX MEASURES - Banking_Customer_Dataset   (table name used below: churn_modelling)
+// Power BI: Report view > Modeling > New measure > paste ONE line at a time (or use Tabular Editor).
+// If your table has another name, use Find/Replace on "churn_modelling[".
+// ======================================================================
+
+// ---- 1. basic measures ----
+Total CreditScore = SUM(churn_modelling[CreditScore])
+Avg CreditScore = AVERAGE(churn_modelling[CreditScore])
+Total Age = SUM(churn_modelling[Age])
+Avg Age = AVERAGE(churn_modelling[Age])
+Total Tenure = SUM(churn_modelling[Tenure])
+Avg Tenure = AVERAGE(churn_modelling[Tenure])
+Total Balance = SUM(churn_modelling[Balance])
+Avg Balance = AVERAGE(churn_modelling[Balance])
+Total NumOfProducts = SUM(churn_modelling[NumOfProducts])
+Avg NumOfProducts = AVERAGE(churn_modelling[NumOfProducts])
+Total EstimatedSalary = SUM(churn_modelling[EstimatedSalary])
+Avg EstimatedSalary = AVERAGE(churn_modelling[EstimatedSalary])
+Total Exited = SUM(churn_modelling[Exited])
+Avg Exited = AVERAGE(churn_modelling[Exited])
+Row Count = COUNTROWS(churn_modelling)
+
+// ---- 2. business measures ----
+Customers = COUNTROWS(churn_modelling)
+Churned Customers = SUM(churn_modelling[Exited])
+Churn Rate = DIVIDE([Churned Customers], [Customers])
+Avg Balance = AVERAGE(churn_modelling[Balance])

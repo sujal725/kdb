@@ -1,0 +1,18 @@
+# Dataset sources and confidence
+
+A = column list confirmed online. B = partly confirmed / several files share the name. C = best guess.
+
+| # | Dataset folder | Confidence | Source used |
+|---|---|---|---|
+| 1 | `01_Ecommerce_sales` | B | Kaggle "E-commerce Sales Prediction Dataset" by nevildhinoja (1,000 synthetic rows, 7 columns). https://baselight.app/u/kaggle/dataset/nevildhinoja_e_commerce_sales_prediction_dataset |
+| 2 | `02_Employee` | B | Kaggle "Employee Dataset" by tawfikelmetwally (4,653 rows, 9 columns). https://baselight.app/u/kaggle/dataset/tawfikelmetwally_employee_dataset |
+| 3 | `03_Financials` | A | Microsoft "Financial Sample" workbook (700 rows, 16 columns; same file is used in many Power BI/Excel tutorials). Column list confirmed on several public copies, e.g. https://www.gigasheet.com/sample-data/company-financials-dataset |
+| 4 | `04_Retail_sales` | A | Kaggle "Retail Sales Dataset" by mohammadtalib786 (1,000 rows, 9 columns). https://baselight.app/u/kaggle/dataset/mohammadtalib786_retail_sales_dataset |
+| 5 | `05_Super_Market_Analysis` | A | Kaggle "Supermarket sales" by aungpyaeap (1,000 rows, 17 columns, 3 branches in Myanmar, Jan-Mar 2019). Column list confirmed on multiple sources, e.g. https://baselight.app/u/kaggle/dataset/lovishbansal123_sales_of_a_supermarket |
+| 6 | `06_Sales_Transaction_Dataset` | B | Kaggle "E-commerce Business Transaction" / "Sales Transaction Dataset" by gabrielramos87 (~500K rows, 8 columns, UK online shop, one year). https://baselight.app/u/kaggle/dataset/gabrielramos87_an_online_shop_business |
+| 7 | `07_Retail_Transactions_Dataset` | B | Kaggle "Retail Transactions Dataset" (market-basket style, 13 columns). Column names Transaction_ID, Date, Customer_Name confirmed at https://gts.ai/dataset-download/retail-transactions-dataset/ ; the rest from the dataset description. NOTE: a different 100,000-row file called "Retail_Transaction_Dataset" (10 columns: CustomerID, ProductID, Quantity, Price, TransactionDate, PaymentMethod, StoreLocation, ProductCategory, DiscountApplied(%), TotalAmount) also exists - check your header. |
+| 8 | `08_Customer_Purchase_History_Dataset` | A | Kaggle "Customer Purchasing Behaviors" by hanaksoy (238 rows, 7 columns). https://baselight.app/u/kaggle/dataset/hanaksoy_customer_purchasing_behaviors  (the name "Customer Purchase History" is ambiguous - check your header against the table) |
+| 9 | `09_HR_Analytics_Dataset` | A | Kaggle "HR Analytics Dataset" by saadharoon27 (1,480 rows, 38 columns; IBM HR attrition data plus EmpID, AgeGroup and SalarySlab). https://baselight.app/u/kaggle/dataset/saadharoon27_hr_analytics_dataset  (the plain IBM file has 35 columns - without EmpID, AgeGroup, SalarySlab) |
+| 10 | `10_Inventory_and_Stock_Dataset` | C | NOT verified online (no single dataset with this exact name was found). Best match: Kaggle "Retail Store Inventory Forecasting Dataset" (73,100 rows, 15 columns). Column names below come from my own knowledge - compare them with your file. |
+| 11 | `11_Online_Orders_Dataset` | A | Kaggle "Online Sales Dataset - Popular Marketplace Data" by shreyanshverma27 (240 rows, 9 columns). https://baselight.app/u/kaggle/dataset/shreyanshverma27_online_sales_dataset_popular_marketplace_data  (Alternative with the same theme: yusufdelikkaya "Online Sales Dataset" with InvoiceNo/StockCode/Description/Quantity/InvoiceDate/UnitPrice/CustomerID/Country/Discount/PaymentMethod/ShippingCost/Category/SalesChannel/ReturnStatus/ShipmentProvider/WarehouseLocation/OrderPriority.) |
+| 12 | `12_Banking_Customer_Dataset` | A | Kaggle "Churn Modelling / Bank Customer Churn" (10,000 rows, 14 columns, European bank). https://baselight.app/u/kaggle/dataset/murilozangari_customer_churn_from_a_bank |

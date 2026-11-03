@@ -1,0 +1,25 @@
+// ======================================================================
+// DAX MEASURES - Retail_sales   (table name used below: retail_sales_dataset)
+// Power BI: Report view > Modeling > New measure > paste ONE line at a time (or use Tabular Editor).
+// If your table has another name, use Find/Replace on "retail_sales_dataset[".
+// ======================================================================
+
+// ---- 1. basic measures ----
+Total Quantity = SUM(retail_sales_dataset[Quantity])
+Avg Quantity = AVERAGE(retail_sales_dataset[Quantity])
+Total Price per Unit = SUM(retail_sales_dataset[Price per Unit])
+Avg Price per Unit = AVERAGE(retail_sales_dataset[Price per Unit])
+Total Total Amount = SUM(retail_sales_dataset[Total Amount])
+Avg Total Amount = AVERAGE(retail_sales_dataset[Total Amount])
+Row Count = COUNTROWS(retail_sales_dataset)
+
+// ---- 2. business measures ----
+Avg Order Value = DIVIDE([Total Total Amount], COUNTROWS(retail_sales_dataset))
+Customers = DISTINCTCOUNT(retail_sales_dataset[Customer ID])
+
+// ---- 3. date table + time intelligence ----
+// Modeling > New table; then Model view: relate DateTable[Date] (one) to retail_sales_dataset[Date] (many). Mark as date table.
+DateTable = ADDCOLUMNS(CALENDAR(MIN(retail_sales_dataset[Date]), MAX(retail_sales_dataset[Date])), "Year", YEAR([Date]), "Quarter", "Q" & QUARTER([Date]), "MonthNo", MONTH([Date]), "Month", FORMAT([Date], "MMM"), "Weekday", FORMAT([Date], "ddd"))
+Total Amount YTD = TOTALYTD([Total Total Amount], DateTable[Date])
+Total Amount Prev Year = CALCULATE([Total Total Amount], SAMEPERIODLASTYEAR(DateTable[Date]))
+Total Amount MoM % = VAR cur = [Total Total Amount] VAR prev = CALCULATE([Total Total Amount], DATEADD(DateTable[Date], -1, MONTH)) RETURN DIVIDE(cur - prev, prev)

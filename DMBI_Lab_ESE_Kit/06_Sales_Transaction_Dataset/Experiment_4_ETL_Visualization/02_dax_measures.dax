@@ -1,0 +1,24 @@
+// ======================================================================
+// DAX MEASURES - Sales_Transaction_Dataset   (table name used below: sales_transaction)
+// Power BI: Report view > Modeling > New measure > paste ONE line at a time (or use Tabular Editor).
+// If your table has another name, use Find/Replace on "sales_transaction[".
+// ======================================================================
+
+// ---- 1. basic measures ----
+Total Price = SUM(sales_transaction[Price])
+Avg Price = AVERAGE(sales_transaction[Price])
+Total Quantity = SUM(sales_transaction[Quantity])
+Avg Quantity = AVERAGE(sales_transaction[Quantity])
+Row Count = COUNTROWS(sales_transaction)
+
+// ---- 2. business measures ----
+Total Sales Amount = SUM(sales_transaction[Sales Amount])
+Customers = DISTINCTCOUNT(sales_transaction[CustomerNo])
+Cancellation Rate = DIVIDE(CALCULATE(COUNTROWS(sales_transaction), sales_transaction[Is Cancellation] = 1), COUNTROWS(sales_transaction))
+
+// ---- 3. date table + time intelligence ----
+// Modeling > New table; then Model view: relate DateTable[Date] (one) to sales_transaction[Date] (many). Mark as date table.
+DateTable = ADDCOLUMNS(CALENDAR(MIN(sales_transaction[Date]), MAX(sales_transaction[Date])), "Year", YEAR([Date]), "Quarter", "Q" & QUARTER([Date]), "MonthNo", MONTH([Date]), "Month", FORMAT([Date], "MMM"), "Weekday", FORMAT([Date], "ddd"))
+Sales Amount YTD = TOTALYTD([Total Sales Amount], DateTable[Date])
+Sales Amount Prev Year = CALCULATE([Total Sales Amount], SAMEPERIODLASTYEAR(DateTable[Date]))
+Sales Amount MoM % = VAR cur = [Total Sales Amount] VAR prev = CALCULATE([Total Sales Amount], DATEADD(DateTable[Date], -1, MONTH)) RETURN DIVIDE(cur - prev, prev)

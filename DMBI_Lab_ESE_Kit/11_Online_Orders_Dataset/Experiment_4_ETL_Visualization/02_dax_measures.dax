@@ -1,0 +1,25 @@
+// ======================================================================
+// DAX MEASURES - Online_Orders_Dataset   (table name used below: online_sales_data)
+// Power BI: Report view > Modeling > New measure > paste ONE line at a time (or use Tabular Editor).
+// If your table has another name, use Find/Replace on "online_sales_data[".
+// ======================================================================
+
+// ---- 1. basic measures ----
+Total Units Sold = SUM(online_sales_data[Units Sold])
+Avg Units Sold = AVERAGE(online_sales_data[Units Sold])
+Total Unit Price = SUM(online_sales_data[Unit Price])
+Avg Unit Price = AVERAGE(online_sales_data[Unit Price])
+Total Total Revenue = SUM(online_sales_data[Total Revenue])
+Avg Total Revenue = AVERAGE(online_sales_data[Total Revenue])
+Row Count = COUNTROWS(online_sales_data)
+
+// ---- 2. business measures ----
+Orders = DISTINCTCOUNT(online_sales_data[Transaction ID])
+Avg Order Value = DIVIDE([Total Total Revenue], [Orders])
+
+// ---- 3. date table + time intelligence ----
+// Modeling > New table; then Model view: relate DateTable[Date] (one) to online_sales_data[Date] (many). Mark as date table.
+DateTable = ADDCOLUMNS(CALENDAR(MIN(online_sales_data[Date]), MAX(online_sales_data[Date])), "Year", YEAR([Date]), "Quarter", "Q" & QUARTER([Date]), "MonthNo", MONTH([Date]), "Month", FORMAT([Date], "MMM"), "Weekday", FORMAT([Date], "ddd"))
+Total Revenue YTD = TOTALYTD([Total Total Revenue], DateTable[Date])
+Total Revenue Prev Year = CALCULATE([Total Total Revenue], SAMEPERIODLASTYEAR(DateTable[Date]))
+Total Revenue MoM % = VAR cur = [Total Total Revenue] VAR prev = CALCULATE([Total Total Revenue], DATEADD(DateTable[Date], -1, MONTH)) RETURN DIVIDE(cur - prev, prev)

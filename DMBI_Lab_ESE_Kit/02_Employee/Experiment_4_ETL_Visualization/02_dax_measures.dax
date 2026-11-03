@@ -1,0 +1,19 @@
+// ======================================================================
+// DAX MEASURES - Employee   (table name used below: Employee)
+// Power BI: Report view > Modeling > New measure > paste ONE line at a time (or use Tabular Editor).
+// If your table has another name, use Find/Replace on "Employee[".
+// ======================================================================
+
+// ---- 1. basic measures ----
+Total Age = SUM(Employee[Age])
+Avg Age = AVERAGE(Employee[Age])
+Total ExperienceInCurrentDomain = SUM(Employee[ExperienceInCurrentDomain])
+Avg ExperienceInCurrentDomain = AVERAGE(Employee[ExperienceInCurrentDomain])
+Total LeaveOrNot = SUM(Employee[LeaveOrNot])
+Avg LeaveOrNot = AVERAGE(Employee[LeaveOrNot])
+Row Count = COUNTROWS(Employee)
+
+// ---- 2. business measures ----
+Employees = COUNTROWS(Employee)
+Leavers = SUM(Employee[LeaveOrNot])
+Attrition Rate = DIVIDE([Leavers], [Employees])

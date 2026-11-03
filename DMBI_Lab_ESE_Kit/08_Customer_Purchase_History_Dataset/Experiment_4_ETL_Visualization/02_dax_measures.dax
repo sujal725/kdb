@@ -1,0 +1,22 @@
+// ======================================================================
+// DAX MEASURES - Customer_Purchase_History_Dataset   (table name used below: customer_purchasing_behaviors)
+// Power BI: Report view > Modeling > New measure > paste ONE line at a time (or use Tabular Editor).
+// If your table has another name, use Find/Replace on "customer_purchasing_behaviors[".
+// ======================================================================
+
+// ---- 1. basic measures ----
+Total age = SUM(customer_purchasing_behaviors[age])
+Avg age = AVERAGE(customer_purchasing_behaviors[age])
+Total annual_income = SUM(customer_purchasing_behaviors[annual_income])
+Avg annual_income = AVERAGE(customer_purchasing_behaviors[annual_income])
+Total purchase_amount = SUM(customer_purchasing_behaviors[purchase_amount])
+Avg purchase_amount = AVERAGE(customer_purchasing_behaviors[purchase_amount])
+Total loyalty_score = SUM(customer_purchasing_behaviors[loyalty_score])
+Avg loyalty_score = AVERAGE(customer_purchasing_behaviors[loyalty_score])
+Total purchase_frequency = SUM(customer_purchasing_behaviors[purchase_frequency])
+Avg purchase_frequency = AVERAGE(customer_purchasing_behaviors[purchase_frequency])
+Row Count = COUNTROWS(customer_purchasing_behaviors)
+
+// ---- 2. business measures ----
+Customers = COUNTROWS(customer_purchasing_behaviors)
+Spend per Customer = DIVIDE([Total purchase_amount], [Customers])

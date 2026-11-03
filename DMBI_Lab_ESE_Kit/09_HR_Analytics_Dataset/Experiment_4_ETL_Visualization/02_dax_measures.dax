@@ -1,0 +1,23 @@
+// ======================================================================
+// DAX MEASURES - HR_Analytics_Dataset   (table name used below: hr_analytics)
+// Power BI: Report view > Modeling > New measure > paste ONE line at a time (or use Tabular Editor).
+// If your table has another name, use Find/Replace on "hr_analytics[".
+// ======================================================================
+
+// ---- 1. basic measures ----
+Total Age = SUM(hr_analytics[Age])
+Avg Age = AVERAGE(hr_analytics[Age])
+Total MonthlyIncome = SUM(hr_analytics[MonthlyIncome])
+Avg MonthlyIncome = AVERAGE(hr_analytics[MonthlyIncome])
+Total DistanceFromHome = SUM(hr_analytics[DistanceFromHome])
+Avg DistanceFromHome = AVERAGE(hr_analytics[DistanceFromHome])
+Total YearsAtCompany = SUM(hr_analytics[YearsAtCompany])
+Avg YearsAtCompany = AVERAGE(hr_analytics[YearsAtCompany])
+Total JobSatisfaction = SUM(hr_analytics[JobSatisfaction])
+Avg JobSatisfaction = AVERAGE(hr_analytics[JobSatisfaction])
+Row Count = COUNTROWS(hr_analytics)
+
+// ---- 2. business measures ----
+Employees = COUNTROWS(hr_analytics)
+Leavers = CALCULATE(COUNTROWS(hr_analytics), hr_analytics[Attrition] = "Yes")
+Attrition Rate = DIVIDE([Leavers], [Employees])

@@ -1,0 +1,32 @@
+// ======================================================================
+// DAX MEASURES - Financials   (table name used below: Financials)
+// Power BI: Report view > Modeling > New measure > paste ONE line at a time (or use Tabular Editor).
+// If your table has another name, use Find/Replace on "Financials[".
+// ======================================================================
+
+// ---- 1. basic measures ----
+Total Units Sold = SUM(Financials[Units Sold])
+Avg Units Sold = AVERAGE(Financials[Units Sold])
+Total Gross Sales = SUM(Financials[Gross Sales])
+Avg Gross Sales = AVERAGE(Financials[Gross Sales])
+Total Discounts = SUM(Financials[Discounts])
+Avg Discounts = AVERAGE(Financials[Discounts])
+Total Sales = SUM(Financials[Sales])
+Avg Sales = AVERAGE(Financials[Sales])
+Total COGS = SUM(Financials[COGS])
+Avg COGS = AVERAGE(Financials[COGS])
+Total Profit = SUM(Financials[Profit])
+Avg Profit = AVERAGE(Financials[Profit])
+Row Count = COUNTROWS(Financials)
+
+// ---- 2. business measures ----
+Profit Margin % = DIVIDE([Total Profit], [Total Sales])
+Discount Rate = DIVIDE([Total Discounts], [Total Gross Sales])
+Profit per Unit = DIVIDE([Total Profit], [Total Units Sold])
+
+// ---- 3. date table + time intelligence ----
+// Modeling > New table; then Model view: relate DateTable[Date] (one) to Financials[Date] (many). Mark as date table.
+DateTable = ADDCOLUMNS(CALENDAR(MIN(Financials[Date]), MAX(Financials[Date])), "Year", YEAR([Date]), "Quarter", "Q" & QUARTER([Date]), "MonthNo", MONTH([Date]), "Month", FORMAT([Date], "MMM"), "Weekday", FORMAT([Date], "ddd"))
+Sales YTD = TOTALYTD([Total Sales], DateTable[Date])
+Sales Prev Year = CALCULATE([Total Sales], SAMEPERIODLASTYEAR(DateTable[Date]))
+Sales MoM % = VAR cur = [Total Sales] VAR prev = CALCULATE([Total Sales], DATEADD(DateTable[Date], -1, MONTH)) RETURN DIVIDE(cur - prev, prev)

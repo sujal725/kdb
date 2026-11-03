@@ -1,0 +1,28 @@
+// ======================================================================
+// DAX MEASURES - Ecommerce_sales   (table name used below: ecommerce_sales)
+// Power BI: Report view > Modeling > New measure > paste ONE line at a time (or use Tabular Editor).
+// If your table has another name, use Find/Replace on "ecommerce_sales[".
+// ======================================================================
+
+// ---- 1. basic measures ----
+Total Price = SUM(ecommerce_sales[Price])
+Avg Price = AVERAGE(ecommerce_sales[Price])
+Total Discount = SUM(ecommerce_sales[Discount])
+Avg Discount = AVERAGE(ecommerce_sales[Discount])
+Total Marketing_Spend = SUM(ecommerce_sales[Marketing_Spend])
+Avg Marketing_Spend = AVERAGE(ecommerce_sales[Marketing_Spend])
+Total Units_Sold = SUM(ecommerce_sales[Units_Sold])
+Avg Units_Sold = AVERAGE(ecommerce_sales[Units_Sold])
+Row Count = COUNTROWS(ecommerce_sales)
+
+// ---- 2. business measures ----
+Total Net Revenue = SUM(ecommerce_sales[Net Revenue])
+Marketing ROI = DIVIDE([Total Net Revenue], [Total Marketing_Spend])
+Avg Discount = AVERAGE(ecommerce_sales[Discount])
+
+// ---- 3. date table + time intelligence ----
+// Modeling > New table; then Model view: relate DateTable[Date] (one) to ecommerce_sales[Date] (many). Mark as date table.
+DateTable = ADDCOLUMNS(CALENDAR(MIN(ecommerce_sales[Date]), MAX(ecommerce_sales[Date])), "Year", YEAR([Date]), "Quarter", "Q" & QUARTER([Date]), "MonthNo", MONTH([Date]), "Month", FORMAT([Date], "MMM"), "Weekday", FORMAT([Date], "ddd"))
+Net Revenue YTD = TOTALYTD([Total Net Revenue], DateTable[Date])
+Net Revenue Prev Year = CALCULATE([Total Net Revenue], SAMEPERIODLASTYEAR(DateTable[Date]))
+Net Revenue MoM % = VAR cur = [Total Net Revenue] VAR prev = CALCULATE([Total Net Revenue], DATEADD(DateTable[Date], -1, MONTH)) RETURN DIVIDE(cur - prev, prev)

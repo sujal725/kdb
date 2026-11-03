@@ -1,0 +1,23 @@
+// ======================================================================
+// DAX MEASURES - Retail_Transactions_Dataset   (table name used below: retail_transactions)
+// Power BI: Report view > Modeling > New measure > paste ONE line at a time (or use Tabular Editor).
+// If your table has another name, use Find/Replace on "retail_transactions[".
+// ======================================================================
+
+// ---- 1. basic measures ----
+Total Total_Items = SUM(retail_transactions[Total_Items])
+Avg Total_Items = AVERAGE(retail_transactions[Total_Items])
+Total Total_Cost = SUM(retail_transactions[Total_Cost])
+Avg Total_Cost = AVERAGE(retail_transactions[Total_Cost])
+Row Count = COUNTROWS(retail_transactions)
+
+// ---- 2. business measures ----
+Transactions = DISTINCTCOUNT(retail_transactions[Transaction_ID])
+Avg Basket Value = DIVIDE([Total Total_Cost], [Transactions])
+
+// ---- 3. date table + time intelligence ----
+// Modeling > New table; then Model view: relate DateTable[Date] (one) to retail_transactions[Date] (many). Mark as date table.
+DateTable = ADDCOLUMNS(CALENDAR(MIN(retail_transactions[Date]), MAX(retail_transactions[Date])), "Year", YEAR([Date]), "Quarter", "Q" & QUARTER([Date]), "MonthNo", MONTH([Date]), "Month", FORMAT([Date], "MMM"), "Weekday", FORMAT([Date], "ddd"))
+Total_Cost YTD = TOTALYTD([Total Total_Cost], DateTable[Date])
+Total_Cost Prev Year = CALCULATE([Total Total_Cost], SAMEPERIODLASTYEAR(DateTable[Date]))
+Total_Cost MoM % = VAR cur = [Total Total_Cost] VAR prev = CALCULATE([Total Total_Cost], DATEADD(DateTable[Date], -1, MONTH)) RETURN DIVIDE(cur - prev, prev)

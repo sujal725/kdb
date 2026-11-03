@@ -1,0 +1,29 @@
+// ======================================================================
+// DAX MEASURES - Inventory_and_Stock_Dataset   (table name used below: retail_store_inventory)
+// Power BI: Report view > Modeling > New measure > paste ONE line at a time (or use Tabular Editor).
+// If your table has another name, use Find/Replace on "retail_store_inventory[".
+// ======================================================================
+
+// ---- 1. basic measures ----
+Total Inventory Level = SUM(retail_store_inventory[Inventory Level])
+Avg Inventory Level = AVERAGE(retail_store_inventory[Inventory Level])
+Total Units Sold = SUM(retail_store_inventory[Units Sold])
+Avg Units Sold = AVERAGE(retail_store_inventory[Units Sold])
+Total Units Ordered = SUM(retail_store_inventory[Units Ordered])
+Avg Units Ordered = AVERAGE(retail_store_inventory[Units Ordered])
+Total Demand Forecast = SUM(retail_store_inventory[Demand Forecast])
+Avg Demand Forecast = AVERAGE(retail_store_inventory[Demand Forecast])
+Total Price = SUM(retail_store_inventory[Price])
+Avg Price = AVERAGE(retail_store_inventory[Price])
+Row Count = COUNTROWS(retail_store_inventory)
+
+// ---- 2. business measures ----
+Sell-through % = DIVIDE([Total Units Sold], [Total Inventory Level])
+Forecast Accuracy = 1 - DIVIDE(SUMX(retail_store_inventory, ABS(retail_store_inventory[Units Sold] - retail_store_inventory[Demand Forecast])), [Total Demand Forecast])
+
+// ---- 3. date table + time intelligence ----
+// Modeling > New table; then Model view: relate DateTable[Date] (one) to retail_store_inventory[Date] (many). Mark as date table.
+DateTable = ADDCOLUMNS(CALENDAR(MIN(retail_store_inventory[Date]), MAX(retail_store_inventory[Date])), "Year", YEAR([Date]), "Quarter", "Q" & QUARTER([Date]), "MonthNo", MONTH([Date]), "Month", FORMAT([Date], "MMM"), "Weekday", FORMAT([Date], "ddd"))
+Units Sold YTD = TOTALYTD([Total Units Sold], DateTable[Date])
+Units Sold Prev Year = CALCULATE([Total Units Sold], SAMEPERIODLASTYEAR(DateTable[Date]))
+Units Sold MoM % = VAR cur = [Total Units Sold] VAR prev = CALCULATE([Total Units Sold], DATEADD(DateTable[Date], -1, MONTH)) RETURN DIVIDE(cur - prev, prev)

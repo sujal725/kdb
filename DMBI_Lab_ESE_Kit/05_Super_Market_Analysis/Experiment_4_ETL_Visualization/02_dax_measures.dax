@@ -1,0 +1,32 @@
+// ======================================================================
+// DAX MEASURES - Super_Market_Analysis   (table name used below: supermarket_sales)
+// Power BI: Report view > Modeling > New measure > paste ONE line at a time (or use Tabular Editor).
+// If your table has another name, use Find/Replace on "supermarket_sales[".
+// ======================================================================
+
+// ---- 1. basic measures ----
+Total Unit price = SUM(supermarket_sales[Unit price])
+Avg Unit price = AVERAGE(supermarket_sales[Unit price])
+Total Quantity = SUM(supermarket_sales[Quantity])
+Avg Quantity = AVERAGE(supermarket_sales[Quantity])
+Total Total = SUM(supermarket_sales[Total])
+Avg Total = AVERAGE(supermarket_sales[Total])
+Total cogs = SUM(supermarket_sales[cogs])
+Avg cogs = AVERAGE(supermarket_sales[cogs])
+Total gross income = SUM(supermarket_sales[gross income])
+Avg gross income = AVERAGE(supermarket_sales[gross income])
+Total Rating = SUM(supermarket_sales[Rating])
+Avg Rating = AVERAGE(supermarket_sales[Rating])
+Row Count = COUNTROWS(supermarket_sales)
+
+// ---- 2. business measures ----
+Invoices = DISTINCTCOUNT(supermarket_sales[Invoice ID])
+Avg Rating = AVERAGE(supermarket_sales[Rating])
+Avg Basket Value = DIVIDE([Total Total], [Invoices])
+
+// ---- 3. date table + time intelligence ----
+// Modeling > New table; then Model view: relate DateTable[Date] (one) to supermarket_sales[Date] (many). Mark as date table.
+DateTable = ADDCOLUMNS(CALENDAR(MIN(supermarket_sales[Date]), MAX(supermarket_sales[Date])), "Year", YEAR([Date]), "Quarter", "Q" & QUARTER([Date]), "MonthNo", MONTH([Date]), "Month", FORMAT([Date], "MMM"), "Weekday", FORMAT([Date], "ddd"))
+Total YTD = TOTALYTD([Total Total], DateTable[Date])
+Total Prev Year = CALCULATE([Total Total], SAMEPERIODLASTYEAR(DateTable[Date]))
+Total MoM % = VAR cur = [Total Total] VAR prev = CALCULATE([Total Total], DATEADD(DateTable[Date], -1, MONTH)) RETURN DIVIDE(cur - prev, prev)
